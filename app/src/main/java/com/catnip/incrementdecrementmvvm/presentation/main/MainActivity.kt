@@ -1,17 +1,22 @@
-package com.catnip.incrementdecrementmvvm
+package com.catnip.incrementdecrementmvvm.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.catnip.incrementdecrementmvvm.data.CounterDataSource
+import com.catnip.incrementdecrementmvvm.data.CounterDataSourceImpl
 import com.catnip.incrementdecrementmvvm.databinding.ActivityMainBinding
+import com.catnip.incrementdecrementmvvm.utils.GenericViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+    private val viewModel: MainViewModel by viewModels {
+        val dataSource: CounterDataSource = CounterDataSourceImpl()
+        GenericViewModelFactory.create(MainViewModel(dataSource))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,5 +48,4 @@ class MainActivity : AppCompatActivity() {
     private fun increment() {
         viewModel.increment()
     }
-
 }
